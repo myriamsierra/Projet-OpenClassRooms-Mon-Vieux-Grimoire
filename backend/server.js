@@ -1,13 +1,58 @@
-//ici le code pour notre server node
-// on va creer un programme qui va ecouter des requetes http et qui va y répondre//
+//server node
 
-//1-importer le package http de node 
- const http = require('http');
- //2-on va creer un serveur, on appelle la methode 'createserver' de node pour le creer
- //elle recois deux arguments la requete et la réponse
- const server = http.createServer((req,res) => {
-    res.end('voilà la réponse du serveur !! ');
- }); 
- //on va ecouter la requete envoyer avec la methode 'listen' de node
- //ici on va ecouter l'environement, sinon par default on va utiliser le port 3000
- server.listen(process.env.PORT || 3000)
+// on va importer le package http de node 
+const http = require('http');
+// on va importe notre aplication express
+const app = require('./app');
+
+// renvoie un port valide, qu'il soit fourni sous la forme d'un numéro ou d'une chaîne
+const normalizePort = val => {
+    const port = parseInt(val, 10);
+  
+    if (isNaN(port)) {
+      return val;
+    }
+    if (port >= 0) {
+      return port;
+    }
+    return false;
+  };
+
+//on va indiquer sur quel port notre application va tourner
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+//recherche les différentes erreurs et les gère de manière appropriée. Elle est ensuite enregistrée dans le serveur
+const errorHandler = error => {
+    if (error.syscall !== 'listen') {
+      throw error;
+    }
+    const address = server.address();
+    const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
+    switch (error.code) {
+      case 'EACCES':
+        console.error(bind + ' requires elevated privileges.');
+        process.exit(1);
+        break;
+      case 'EADDRINUSE':
+        console.error(bind + ' is already in use.');
+        process.exit(1);
+        break;
+      default:
+        throw error;
+    }
+  };
+  
+//on va creer un serveur, on appelle la methode 'createserver' de node pour le creer et renvoyer notre serveur express en argument
+const server = http.createServer(app);
+
+//un écouteur d'évènements est également enregistré, consignant le port ou le canal nommé sur lequel le serveur s'exécute dans la console
+server.on('error', errorHandler);
+server.on('listening', () => {
+  const address = server.address();
+  const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
+  console.log('Listening on ' + bind);
+});
+    
+//on va ecouter la requete envoyer(on va ecouter tous l'environement, sinon par default le port 3000) avec la methode 'listen' de node
+server.listen(process.env.PORT || 3000);
