@@ -6,32 +6,47 @@ const express = require('express');
 //on creer notre application en appelant la methode express (ce qui permet de creer une application express)
 const app = express();
 
-//premier middleware (test)
+//premier middleware, intercepte toute les requetes qui ont ont content type json, et nous donne acceé au corp de la requete 
+app.use(express.json());
+
+//premier middleware,(CORS) general (il n y a pas de route precise indiquer) le cors est une securité, nous on veut que tout le monde puisse acceder a notre api, on va rajouter des headers a notre reponse pour indiquer que l utilisateur va avoir le droit d acceder a notre api 
 app.use((req, res, next) => {
-    console.log('premier middleware');
-    //on renvoie au prochain middleware
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
   });
 
-//deuxieme middleware pour modifier le statut de notre requete (Le statut HTTP 201 est une réponse de réussite qui indique que la requête a été traitée avec succès et qu'une nouvelle ressource a été créée en conséquence)
-app.use((req, res, next) =>{
-    res.status(201);
-    //on renvoie au prochain middleware
-    next()
+//intercepter les requetes post, renvoyer un statut 201, et un messagePlacer la route POST au-dessus interceptera les requêtes POST, en les empêchant d'atteindre le middleware GET.
+app.post('/api/books', (req, res, next) => {
+    console.log(req.body);
+    res.status(201).json({
+      message: 'Objet créé'
+    });
 });
 
-//troisieme middleware,on va utiliser la methode use pour faire une fonction qui recoit la requete,la reponse et la fonction next(qui renverra a la prochaine fonction), peut importe le type de requete
-app.use((req, res, next)=> {
-    //on retourne une reponse en format json
-    res.json({message:'votre requete à été recue'});
-    //on renvoie au prochain middleware
-    next();
-});
-
-//dernier middleware
-app.use((req,res) => {
-    console.log('dernier middleware');
-});
+//middleware intercepter les requetes get et donner en reponse un tableau
+app.get('/api/books', (req, res, next) => {
+    const stuff = [
+      {
+        _id: 'oeihfzeoi',
+        title: 'Mon premier objet',
+        description: 'Les infos de mon premier objet',
+        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
+        price: 4900,
+        userId: 'qsomihvqios',
+      },
+      {
+        _id: 'oeihfzeomoihi',
+        title: 'Mon deuxième objet',
+        description: 'Les infos de mon deuxième objet',
+        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
+        price: 2900,
+        userId: 'qsomihvqios',
+      },
+    ];
+    res.status(200).json(stuff);
+  });
 
 //on va exporter cette application
 module.exports = app;
