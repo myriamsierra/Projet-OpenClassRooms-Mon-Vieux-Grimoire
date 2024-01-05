@@ -3,8 +3,18 @@
 //on importe express
 const express = require('express');
 
+//on importe moongoose
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://user2:HuhzRn2BUwwh3DnG@clustermonvieuxgrimoire.uda4x4z.mongodb.net/?retryWrites=true&w=majority',
+  { useNewUrlParser: true,
+    useUnifiedTopology: true })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
+
 //on creer notre application en appelant la methode express (ce qui permet de creer une application express)
 const app = express();
+
 
 //premier middleware, intercepte toute les requetes qui ont ont content type json, et nous donne acceé au corp de la requete 
 app.use(express.json());
