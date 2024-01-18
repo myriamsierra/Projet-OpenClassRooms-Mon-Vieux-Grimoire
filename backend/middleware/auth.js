@@ -1,7 +1,7 @@
-// Importation du module jwt pour la gestion des tokens JWT
+// 1--Importation du module jwt pour la gestion des tokens JWT
 const jwt = require('jsonwebtoken');
 
-// Middleware pour l'authentification avec un token JWT
+// 2--Middleware pour l'authentification avec un token JWT
 module.exports = (req, res, next) => {
     try {
         // Extraction du token du header Authorization
