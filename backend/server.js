@@ -1,51 +1,49 @@
-//---------------------------------------------------------SERVER NODE JS------------------------------------------------------------------------
+/////////////////////////////////////CREATION DU SERVEUR//////////////////////////////////////////////
 
-//--1 On importe les modules necessaires
-const http = require('http');// Importation du module http pour créer le serveur 
-const app = require('./app');// Importation de notre application express
+const http = require('http');
+const app = require('./app');
 
-// --2 Fonction (normelizePort) qui ajuste et normalise le numéro de port
+// 1--FONCTION POUR NORMALISER LE PORT
 const normalizePort = (val) => {
-  const port = parseInt(val, 10);  // Convertit le numéro de port en un entier base 10.
-
-  if (isNaN(port)) { // Si ce n'est pas un nombre, retourne la valeur d'origine.
-      return val;
-  }
-  if (port >= 0) { // Si le numéro de port est un nombre positif, retourne le numéro de port.
-      return port;
-  }
-  return false;// Sinon, retourne false (indique qu'il n'est pas valide).
+    const port = parseInt(val, 10);  
+        if (isNaN(port)) {
+            return val;
+        }
+        if (port >= 0) {
+            return port;
+        }
+    return false;
 };
 
-// --3 Récupération du port à partir des variables d'environnement ou utilisation du port 3000 par défaut
+// 2-- RECUPERER LA VAR ENVIRONEMENT (OU P3000 PAR DEFAULT) POUR NOTRE APP
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-// --4 Fonction(errorHandler) de gestion des erreurs liées au serveur
+// 3--CALLBACK ERREURS PORTS
 const errorHandler = error => {
     if (error.syscall !== 'listen') {
         throw error;
     }
     const address = server.address();
-    const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
+    const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
     switch (error.code) {
         case 'EACCES':
             console.error(bind + ' nécessite des privilèges élevés.');
             process.exit(1);
-            break;
+        break;
         case 'EADDRINUSE':
             console.error(bind + ' est déjà utilisé.');
             process.exit(1);
-            break;
+        break;
         default:
-            throw error;
-    }
+    throw error;
+  }
 };
 
-// --5 Création du serveur en utilisant le module http et l'application définie dans app
+// 4--CREATION DU SERVEUR HTTP AVC EXPRESS
 const server = http.createServer(app);
 
-// --6 Gestion des événements d'erreur et de lancement du serveur
+// 5--EVENT HANDLER
 server.on('error', errorHandler);
 server.on('listening', () => {
     const address = server.address();
@@ -53,5 +51,5 @@ server.on('listening', () => {
     console.log('Écoute sur ' + bind);
 });
 
-// --7 Lancement du serveur sur le port spécifié dans les variables d'environnement ou sur le port 3000 par défaut
-server.listen(process.env.PORT || 3000);
+// 6--DEMARRER LE SERV EN ECOUTANT LE PORT SPECIFIE
+server.listen(port);

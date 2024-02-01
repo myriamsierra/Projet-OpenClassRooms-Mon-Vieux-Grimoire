@@ -1,22 +1,24 @@
-// 1--Importation du module mongoose
+////////////////////////BOOKS MODELS/////////////////////////////
+
+// 1--IMPORTATION DE MONGOOSE POUR LA GESTION DES DONNÉES MONGODB
 const mongoose = require('mongoose');
 
-// 2--Définition du schéma de données pour les livres
+// 2--DÉFINITION DU SCHÉMA BOOKS
 const BookSchema = mongoose.Schema({
-    userId: { type: String, required: true }, // Identifiant de l'utilisateur associé au livre
-    title: { type: String, required: true }, // Titre du livre
-    author: { type: String, required: true }, // Auteur du livre
-    imageUrl: { type: String, required: true }, // URL de l'image du livre
-    year: { type: Number, required: true }, // Année de publication du livre
-    genre: { type: String, required: true }, // Genre du livre
+    userId: { type: String, required: true }, 
+    title: { type: String, required: true }, 
+    author: { type: String, required: true }, 
+    imageUrl: { type: String, required: true }, 
+    year: { type: Number, required: true }, 
+    genre: { type: String, required: true },
     ratings: [
         {
-            userId: { type: String, required: true }, // Identifiant de l'utilisateur qui a donné la note
-            grade: { type: Number, required: true } // Note attribuée par l'utilisateur
+            userId: { type: String, required: true }, 
+            grade: { type: Number, required: true } 
         }
     ],
-    averageRating: { type: Number, required: true } // Note moyenne du livre
+    averageRating: { type: Number,  default: 0 }
 });
 
-// 3--Exportation du modèle Book basé sur le schéma défini
+// 3--EXPORTATION DU MODÈLE DE LIVRE BASÉ SUR LE SCHÉMA BOOK
 module.exports = mongoose.model('Book', BookSchema);
