@@ -10,13 +10,13 @@ const booksControllers = require('./../controllers/books');
 const router = express.Router();
 
 // 3--DEFINITION DES ROUTES BOOKS
+router.get('/', booksControllers.getAllBook); 
 router.get('/bestrating', booksControllers.getBestRatedBooks);  
-router.get('/', booksControllers.getAllBook);  
-router.post('/', auth, multer, booksControllers.createBook);  
-router.get('/:id', booksControllers.getOneBook);  
-router.put('/:id', auth, multer, booksControllers.modifyBook);  
-router.delete('/:id', auth, booksControllers.deleteBook);  
+router.get('/:id', booksControllers.getOneBook); 
+router.put('/:id', auth, multer, booksControllers.modifyBook); 
 router.post('/:id/rating', auth, booksControllers.rateBook);  
+router.post('/', auth, multer, booksControllers.createBook);  
+router.delete('/:id', auth, booksControllers.deleteBook);  
 
 // 4--EXPORTATION DU ROUTEUR POUR UNE UTILISATION EXTERNE
 module.exports = router;

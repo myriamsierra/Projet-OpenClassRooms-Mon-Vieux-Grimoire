@@ -29,7 +29,13 @@ function BookRatingForm({
   const onSubmit = async () => {
     if (!connectedUser || !auth) {
       navigate(APP_ROUTES.SIGN_IN);
+      if (!id) {
+        console.error("ID du livre non spécifié");
+        return; // ou gérer l'erreur d'une manière appropriée
+      }
     }
+
+
     const update = await rateBook(id, userId, rating);
     console.log(update);
     if (update) {

@@ -20,5 +20,16 @@ const BookSchema = mongoose.Schema({
     averageRating: { type: Number,  default: 0 }
 });
 
-// 3--EXPORTATION DU MODÈLE DE LIVRE BASÉ SUR LE SCHÉMA BOOK
+// 3--CALCUL DE LA MOYENNE 
+BookSchema.methods.calculateAverageRating = function () {
+    const numberOfRatings = this.ratings.length;
+    if (numberOfRatings === 0) {
+      this.averageRating = 0;
+    } else {
+      const totalNumbers = this.ratings.reduce((accumulator, rating) => accumulator + rating.grade, 0);
+      this.averageRating = Math.round(totalNumbers / numberOfRatings);
+    }
+  };
+
+// 4--EXPORTATION DU MODÈLE DE LIVRE BASÉ SUR LE SCHÉMA BOOK
 module.exports = mongoose.model('Book', BookSchema);

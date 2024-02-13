@@ -7,7 +7,8 @@ const uniqueValidator = require('mongoose-unique-validator');
 // 2--DEFINITION DU SCHEMA USER
 const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true } 
+    password: { type: String, required: true } ,
+    loginAttempts: { type: Number, default: 0 } // Nouvelle propriété pour suivre les tentatives de connexion échouées
 });
 
 // 3--UTILISATION DU POUR GERER LA VALIDATION UNIQUE 
