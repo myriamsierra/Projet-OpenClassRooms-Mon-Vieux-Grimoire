@@ -15,8 +15,8 @@ const normalizePort = (val) => {
     return false;
 };
 
-// 2-- RECUPERER LA VAR ENVIRONEMENT (OU P3000 PAR DEFAULT) POUR NOTRE APP
-const port = normalizePort(process.env.PORT || '3000');
+// 2-- RECUPERER LA VAR ENVIRONEMENT POUR NOTRE APP
+const port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
 // 3--CALLBACK ERREURS PORTS
